@@ -268,12 +268,12 @@
         <h1>🚀 TripNest API Documentation</h1>
         <p>Complete API reference for frontend integration</p>
         <div class="base-url">
-          <strong>Base URL:</strong> <code>http://localhost:3000</code>
+          <strong>Base URL:</strong> <code>http://localhost:3000/api</code>
         </div>
 
         <div class="grid" style="margin-top: 20px">
           <div class="stat-card">
-            <div class="stat-number">18</div>
+            <div class="stat-number">17</div>
             <div class="stat-label">Total Endpoints</div>
           </div>
           <div class="stat-card">
@@ -294,7 +294,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method post">POST</span>
-            <span class="path">/auth/register</span>
+            <span class="path">/api/auth/register</span>
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">Register a new user account</p>
@@ -334,7 +334,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method post">POST</span>
-            <span class="path">/auth/login</span>
+            <span class="path">/api/auth/login</span>
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">Login to get authentication token</p>
@@ -378,7 +378,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method post">POST</span>
-            <span class="path">/auth/logout</span>
+            <span class="path">/api/auth/logout</span>
             <span class="auth-badge protected">Protected</span>
           </div>
           <p class="description">
@@ -414,7 +414,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/user/profile</span>
+            <span class="path">/api/user/profile</span>
             <span class="auth-badge protected">Protected</span>
             <span class="role-badge">All Roles</span>
           </div>
@@ -424,7 +424,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method put">PUT</span>
-            <span class="path">/user/profile</span>
+            <span class="path">/api/user/profile</span>
             <span class="auth-badge protected">Protected</span>
             <span class="role-badge">All Roles</span>
           </div>
@@ -434,7 +434,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method delete">DELETE</span>
-            <span class="path">/user/profile</span>
+            <span class="path">/api/user/profile</span>
             <span class="auth-badge protected">Protected</span>
             <span class="role-badge">All Roles</span>
           </div>
@@ -449,7 +449,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/user/users</span>
+            <span class="path">/api/user/</span>
             <span class="auth-badge protected">Protected</span>
             <span class="role-badge">Admin Only</span>
           </div>
@@ -458,52 +458,12 @@
 
         <div class="endpoint">
           <div class="endpoint-header">
-            <span class="method get">GET</span>
-            <span class="path">/user/users/:userId</span>
-            <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Admin Only</span>
-          </div>
-          <p class="description">Get specific user details by ID</p>
-        </div>
-
-        <div class="endpoint">
-          <div class="endpoint-header">
-            <span class="method put">PUT</span>
-            <span class="path">/user/users/:userId</span>
-            <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Admin Only</span>
-          </div>
-          <p class="description">Update any user's information</p>
-        </div>
-
-        <div class="endpoint">
-          <div class="endpoint-header">
             <span class="method delete">DELETE</span>
-            <span class="path">/user/users/:userId</span>
+            <span class="path">/api/user/:userId</span>
             <span class="auth-badge protected">Protected</span>
             <span class="role-badge">Admin Only</span>
           </div>
           <p class="description">Delete any user account</p>
-        </div>
-
-        <div class="endpoint">
-          <div class="endpoint-header">
-            <span class="method patch">PATCH</span>
-            <span class="path">/user/users/:userId/role</span>
-            <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Admin Only</span>
-          </div>
-          <p class="description">Update user's role (promote/demote)</p>
-          <div class="collapsible" onclick="toggleCollapse(this)">
-            ▼ View Details
-          </div>
-          <div class="collapsible-content">
-            <div class="code-block">
-              <pre>{
-  <span class="json-key">"role"</span>: <span class="json-string">"creator"</span> <span style="color: #888;">// "user" | "creator" | "admin"</span>
-}</pre>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -514,7 +474,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/event/events</span>
+            <span class="path">/api/event/events</span>
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">
@@ -538,7 +498,7 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/event/events/:eventId</span>
+            <span class="path">/api/event/events/:eventId</span>
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">Get specific event details</p>
@@ -547,9 +507,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method post">POST</span>
-            <span class="path">/event/events</span>
+            <span class="path">/api/event/events</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Creator, Admin</span>
+            <span class="role-badge">Creator Only</span>
           </div>
           <p class="description">Create a new event</p>
           <div class="collapsible" onclick="toggleCollapse(this)">
@@ -572,9 +532,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method put">PUT</span>
-            <span class="path">/event/events/:eventId</span>
+            <span class="path">/api/event/events/:eventId</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Creator (Own), Admin (All)</span>
+            <span class="role-badge">Creator Only</span>
           </div>
           <p class="description">
             Update an event (creator can only update their own events)
@@ -584,9 +544,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method delete">DELETE</span>
-            <span class="path">/event/events/:eventId</span>
+            <span class="path">/api/event/events/:eventId</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Creator (Own), Admin (All)</span>
+            <span class="role-badge">Creator, Admin</span>
           </div>
           <p class="description">Delete an event</p>
         </div>
@@ -594,33 +554,11 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/event/my-events</span>
+            <span class="path">/api/event/my-events</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Creator, Admin</span>
+            <span class="role-badge">Creator Only</span>
           </div>
           <p class="description">Get events created by current user</p>
-        </div>
-
-        <div class="endpoint">
-          <div class="endpoint-header">
-            <span class="method get">GET</span>
-            <span class="path">/event/events/:eventId/bookings</span>
-            <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Creator (Own), Admin (All)</span>
-          </div>
-          <p class="description">Get all bookings for a specific event</p>
-        </div>
-
-        <div class="endpoint">
-          <div class="endpoint-header">
-            <span class="method get">GET</span>
-            <span class="path">/event/admin/events</span>
-            <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Admin Only</span>
-          </div>
-          <p class="description">
-            Get all events with full administrative details
-          </p>
         </div>
       </div>
 
@@ -631,9 +569,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method post">POST</span>
-            <span class="path">/booking/bookings</span>
+            <span class="path">/api/booking/</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">All Roles</span>
+            <span class="role-badge">User Only</span>
           </div>
           <p class="description">Create a new booking for an event</p>
           <div class="collapsible" onclick="toggleCollapse(this)">
@@ -653,9 +591,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/booking/bookings</span>
+            <span class="path">/api/booking/my-bookings</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">All Roles</span>
+            <span class="role-badge">User Only</span>
           </div>
           <p class="description">Get all bookings for current user</p>
         </div>
@@ -663,9 +601,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/booking/bookings/:bookingId</span>
+            <span class="path">/api/booking/:bookingId</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Owner, Admin</span>
+            <span class="role-badge">User Only</span>
           </div>
           <p class="description">Get specific booking details</p>
         </div>
@@ -673,9 +611,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method put">PUT</span>
-            <span class="path">/booking/bookings/:bookingId</span>
+            <span class="path">/api/booking/:bookingId</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Owner, Admin</span>
+            <span class="role-badge">User Only</span>
           </div>
           <p class="description">Update booking details</p>
         </div>
@@ -683,9 +621,9 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method delete">DELETE</span>
-            <span class="path">/booking/bookings/:bookingId</span>
+            <span class="path">/api/booking/:bookingId</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Owner, Admin</span>
+            <span class="role-badge">User Only</span>
           </div>
           <p class="description">Cancel a booking</p>
         </div>
@@ -693,21 +631,23 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method get">GET</span>
-            <span class="path">/booking/admin/bookings</span>
+            <span class="path">/api/booking/bookings-for-my-events</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Admin Only</span>
+            <span class="role-badge">Creator Only</span>
           </div>
-          <p class="description">Get all bookings in the system</p>
+          <p class="description">
+            Get all bookings for events created by current user
+          </p>
         </div>
 
         <div class="endpoint">
           <div class="endpoint-header">
-            <span class="method delete">DELETE</span>
-            <span class="path">/booking/admin/bookings/:bookingId</span>
+            <span class="method get">GET</span>
+            <span class="path">/api/booking/event/:eventId/bookings</span>
             <span class="auth-badge protected">Protected</span>
-            <span class="role-badge">Admin Only</span>
+            <span class="role-badge">Creator Only</span>
           </div>
-          <p class="description">Cancel any booking (admin override)</p>
+          <p class="description">Get all bookings for a specific event</p>
         </div>
       </div>
 
