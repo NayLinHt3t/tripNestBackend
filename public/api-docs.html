@@ -268,7 +268,7 @@
         <h1>🚀 TripNest API Documentation</h1>
         <p>Complete API reference for frontend integration</p>
         <div class="base-url">
-          <strong>Base URL:</strong> <code>http://localhost:3000/api</code>
+          <strong>Base URL:</strong> <code id="base-url">Loading...</code>
         </div>
 
         <div class="grid" style="margin-top: 20px">
@@ -693,6 +693,14 @@
     </div>
 
     <script>
+      // Dynamically set base URL based on current host
+      function setBaseUrl() {
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        const baseUrl = `${protocol}//${host}/api`;
+        document.getElementById("base-url").textContent = baseUrl;
+      }
+
       function toggleCollapse(element) {
         const content = element.nextElementSibling;
         content.classList.toggle("active");
@@ -700,6 +708,9 @@
           ? "▲ Hide Details"
           : "▼ View Details";
       }
+
+      // Set base URL when page loads
+      window.addEventListener("DOMContentLoaded", setBaseUrl);
     </script>
   </body>
 </html>
