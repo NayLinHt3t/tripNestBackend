@@ -80,7 +80,7 @@ export const register = async (req, res) => {
     if (!username || !password || !email || !phone_number) {
       return res.status(400).json({
         success: false,
-        message: "Username, email, and password and phone number are required",
+        message: "Username, email, password, and phone number are required",
       });
     }
 
@@ -215,67 +215,94 @@ export const logout = (req, res) => {
 };
 
 export const forgotPassword = async (req, res) => {
-  // Implementation for forgot password functionality
-  const { email } = req.body;
+  try {
+    const { email } = req.body;
 
-  // Check if email is provided
-  if (!email) {
-    return res.status(400).json({
+    // Check if email is provided
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Generate password reset token
+    const resetToken = user.createPasswordResetToken();
+
+    // Save the user with the reset token
+    await user.save();
+
+    // Send password reset email
+    await sendPasswordResetEmail(user.email, resetToken);
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent",
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
       success: false,
-      message: "Email is required",
+      message: "Error processing forgot password request",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
-
-  // Check if user exists
-  const user = await User.findOne({ email: email.toLowerCase() });
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User not found",
-    });
-  }
-
-  // Generate password reset token (implement your own logic)
-  const resetToken = user.createPasswordResetToken();
-
-  // Send password reset email (implement your own email sending logic)
-  await sendPasswordResetEmail(user.email, resetToken);
-
-  res.status(200).json({
-    success: true,
-    message: "Password reset email sent",
-  });
 };
 
 export const resetPassword = async (req, res) => {
-  // Implementation for reset password functionality
-  const { resetToken, newPassword } = req.body;
+  try {
+    const { resetToken, newPassword } = req.body;
 
-  // Check if required fields are provided
-  if (!resetToken || !newPassword) {
-    return res.status(400).json({
+    // Check if required fields are provided
+    if (!resetToken || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Reset token and new password are required",
+      });
+    }
+
+    // Validate password strength
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long",
+      });
+    }
+
+    // Find user by reset token
+    const user = await User.findByResetToken(resetToken);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token",
+      });
+    }
+
+    // Update user's password
+    const saltRounds = 10;
+    user.password = await bcrypt.hash(newPassword, saltRounds);
+    user.clearResetToken();
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password has been reset successfully",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({
       success: false,
-      message: "Reset token and new password are required",
+      message: "Error resetting password",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
-
-  // Find user by reset token (implement your own logic)
-  const user = await User.findByResetToken(resetToken);
-  if (!user) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid or expired reset token",
-    });
-  }
-
-  // Update user's password
-  const saltRounds = 10;
-  user.password = await bcrypt.hash(newPassword, saltRounds);
-  user.clearResetToken(); // Clear the reset token (implement your own logic)
-  await user.save();
-
-  res.status(200).json({
-    success: true,
-    message: "Password has been reset successfully",
-  });
 };
