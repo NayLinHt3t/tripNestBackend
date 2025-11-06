@@ -29,7 +29,14 @@ export const getUserProfile = async (req, res) => {
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { username, email } = req.body;
+    const {
+      username,
+      email,
+      date_of_birth,
+      phone_number,
+      profile_picture,
+      gender,
+    } = req.body;
 
     const user = await User.findById(userId);
 
@@ -42,6 +49,11 @@ export const updateUserProfile = async (req, res) => {
 
     user.username = username || user.username;
     user.email = email || user.email;
+    user.password = password || user.password;
+    user.date_of_birth = date_of_birth || user.date_of_birth;
+    user.phone_number = phone_number || user.phone_number;
+    user.profile_picture = profile_picture || user.profile_picture;
+    user.gender = gender || user.gender;
 
     await user.save();
 

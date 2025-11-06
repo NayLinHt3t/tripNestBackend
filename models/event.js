@@ -11,6 +11,7 @@ const eventSchema = new mongoose.Schema(
     description: { type: String, required: true },
     date: { type: Date, required: true },
     location: { type: String, required: true },
+    price: { type: Number, required: true, default: 0 },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

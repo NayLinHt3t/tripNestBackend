@@ -1,26 +1,36 @@
 import express from "express";
 const router = express.Router();
+import { authenticate } from "../middleware/auth.js";
+import { authorize } from "../middleware/auth.js";
+import {
+  createBooking,
+  getMyBookings,
+  getBookingById,
+  updateBooking,
+  cancelBooking,
+  getBookingForMyEvents,
+  getBookingsByEvent,
+} from "../controllers/booking.js";
 
-//user protected routes for bookings
-router.get("/bookings", (req, res) => {
-  // Handle fetching all bookings logic here
-  res.send("List of all bookings");
-});
-router.get("/bookings/:bookingId", (req, res) => {
-  const { bookingId } = req.params;
-  // Handle fetching booking details logic here
-  res.send(`Booking details for booking ID: ${bookingId}`);
-});
-
-router.post("/bookings", (req, res) => {
-  // Handle creating a new booking logic here
-  res.send("Booking created");
-});
-
-router.delete("/bookings/:bookingId", (req, res) => {
-  const { bookingId } = req.params;
-  // Handle deleting a booking logic here
-  res.send(`Booking with ID: ${bookingId} deleted`);
-});
+// Protected routes for users
+router.post("/", authenticate, authorize("user"), createBooking);
+router.get("/my-bookings", authenticate, authorize("user"), getMyBookings);
+router.get("/:bookingId", authenticate, authorize("user"), getBookingById);
+router.put("/:bookingId", authenticate, authorize("user"), updateBooking);
+router.delete("/:bookingId", authenticate, authorize("user"), cancelBooking);
+//Protected routes for creators
+router.get(
+  "/bookings-for-my-events",
+  authenticate,
+  authorize("creator"),
+  getBookingForMyEvents
+);
+//Protected routes for event organizers
+router.get(
+  "/event/:eventId/bookings",
+  authenticate,
+  authorize("creator"),
+  getBookingsByEvent
+);
 
 export default router;

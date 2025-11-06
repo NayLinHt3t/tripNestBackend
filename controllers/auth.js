@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/jwt.js";
+import { sendPasswordResetEmail } from "../utils/passwordResetEmail.js";
 
 export const login = async (req, res) => {
   try {
@@ -64,10 +65,19 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   try {
-    const { username, password, email, role } = req.body;
+    const {
+      username,
+      password,
+      email,
+      role,
+      date_of_birth,
+      phone_number,
+      profile_picture,
+      gender,
+    } = req.body;
 
     // 1. Validate required fields
-    if (!username || !password || !email) {
+    if (!username || !password || !email || !phone_number) {
       return res.status(400).json({
         success: false,
         message: "Username, email, and password are required",
@@ -104,12 +114,16 @@ export const register = async (req, res) => {
 
     // 5. Check if user already exists (email or username)
     const existingUser = await User.findOne({
-      $or: [{ email: email.toLowerCase() }, { username }],
+      $or: [{ email: email.toLowerCase() }, { username }, { phone_number }],
     });
 
     if (existingUser) {
       const field =
-        existingUser.email === email.toLowerCase() ? "Email" : "Username";
+        existingUser.email === email.toLowerCase()
+          ? "Email"
+          : existingUser.username === username
+          ? "Username"
+          : "Phone number";
       return res.status(409).json({
         success: false,
         message: `${field} already exists`,
@@ -125,6 +139,11 @@ export const register = async (req, res) => {
       username,
       password: hashedPassword,
       email: email.toLowerCase(),
+      phone_number,
+      date_of_birth,
+      profile_picture,
+      gender,
+
       role: userRole,
     });
 
@@ -136,6 +155,10 @@ export const register = async (req, res) => {
       id: newUser._id,
       username: newUser.username,
       email: newUser.email,
+      phone_number: newUser.phone_number,
+      date_of_birth: newUser.date_of_birth,
+      profile_picture: newUser.profile_picture,
+      gender: newUser.gender,
       role: newUser.role,
       createdAt: newUser.createdAt,
     };
@@ -188,5 +211,71 @@ export const logout = (req, res) => {
   res.status(200).json({
     success: true,
     message: "Logout successful. Please remove the token from client storage.",
+  });
+};
+
+export const forgotPassword = async (req, res) => {
+  // Implementation for forgot password functionality
+  const { email } = req.body;
+
+  // Check if email is provided
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      message: "Email is required",
+    });
+  }
+
+  // Check if user exists
+  const user = await User.findOne({ email: email.toLowerCase() });
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  // Generate password reset token (implement your own logic)
+  const resetToken = user.generateResetToken();
+
+  // Send password reset email (implement your own email sending logic)
+  await sendPasswordResetEmail(user.email, resetToken);
+
+  res.status(200).json({
+    success: true,
+    message: "Password reset email sent",
+  });
+};
+
+export const resetPassword = async (req, res) => {
+  // Implementation for reset password functionality
+  const { resetToken, newPassword } = req.body;
+
+  // Check if required fields are provided
+  if (!resetToken || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Reset token and new password are required",
+    });
+  }
+
+  // Find user by reset token (implement your own logic)
+  const user = await User.findByResetToken(resetToken);
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or expired reset token",
+    });
+  }
+
+  // Update user's password
+  const saltRounds = 10;
+  user.password = await bcrypt.hash(newPassword, saltRounds);
+  user.clearResetToken(); // Clear the reset token (implement your own logic)
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password has been reset successfully",
   });
 };
