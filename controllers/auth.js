@@ -80,7 +80,7 @@ export const register = async (req, res) => {
     if (!username || !password || !email || !phone_number) {
       return res.status(400).json({
         success: false,
-        message: "Username, email, and password are required",
+        message: "Username, email, and password and phone number are required",
       });
     }
 

@@ -17,6 +17,6 @@ router.post("/register", register);
 // Protected route (optional - logout can work without auth)
 router.post("/logout", authenticate, logout);
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/reset-password/:resetToken", resetPassword);
 
 export default router;
