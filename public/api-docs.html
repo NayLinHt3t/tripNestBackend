@@ -324,7 +324,12 @@
     <span class="json-key">"id"</span>: <span class="json-string">"507f1f77bcf86cd799439011"</span>,
     <span class="json-key">"username"</span>: <span class="json-string">"johndoe"</span>,
     <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>,
-    <span class="json-key">"role"</span>: <span class="json-string">"user"</span>
+    <span class="json-key">"phone_number"</span>: <span class="json-string">"+1234567890"</span>,
+    <span class="json-key">"date_of_birth"</span>: <span class="json-string">"1990-01-01"</span>,
+    <span class="json-key">"profile_picture"</span>: <span class="json-string">"https://example.com/avatar.jpg"</span>,
+    <span class="json-key">"gender"</span>: <span class="json-string">"female"</span>,
+    <span class="json-key">"role"</span>: <span class="json-string">"user"</span>,
+    <span class="json-key">"createdAt"</span>: <span class="json-string">"2025-11-06T12:34:56.789Z"</span>
   }
 }</pre>
             </div>
@@ -414,7 +419,7 @@
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">
-            Request a password reset link/token to be sent to the user's email.
+            Request a password reset token to be sent to the user's email.
           </p>
           <div class="collapsible" onclick="toggleCollapse(this)">
             ▼ View Details
@@ -429,18 +434,33 @@
 }</pre>
             </div>
             <div class="info-box">
-              <strong>Response (200):</strong>
+              <strong>Possible Responses:</strong>
             </div>
             <div class="code-block">
-              <pre>{
+              <pre>// 200 - Email sent
+{
   <span class="json-key">"success"</span>: <span class="json-number">true</span>,
   <span class="json-key">"message"</span>: <span class="json-string">"Password reset email sent"</span>
-}</pre>
+}
+
+// 400 - Missing email
+{
+  <span class="json-key">"success"</span>: <span class="json-number">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Email is required"</span>
+}
+
+// 404 - User not found
+{
+  <span class="json-key">"success"</span>: <span class="json-number">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"User not found"</span>
+}
+</pre>
             </div>
             <div class="info-box">
-              <strong>Note:</strong> For security, the API may always return a
-              generic success message so attackers cannot enumerate existing
-              emails.
+              <strong>Note:</strong> This controller currently returns 404 when
+              the email isn't found. If you prefer to avoid exposing user
+              existence, change the controller to return a generic 200 message
+              instead.
             </div>
           </div>
         </div>
@@ -453,7 +473,7 @@
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">
-            Reset a user's password using the token provided in the reset email.
+            Reset a user's password using the reset token.
           </p>
           <div class="collapsible" onclick="toggleCollapse(this)">
             ▼ View Details
@@ -464,22 +484,36 @@
             </div>
             <div class="code-block">
               <pre>{
-  <span class="json-key">"token"</span>: <span class="json-string">"reset-token-here"</span>,
-  <span class="json-key">"password"</span>: <span class="json-string">"newPassword123"</span>
+  <span class="json-key">"resetToken"</span>: <span class="json-string">"reset-token-here"</span>,
+  <span class="json-key">"newPassword"</span>: <span class="json-string">"newPassword123"</span>
 }</pre>
             </div>
             <div class="info-box">
-              <strong>Response (200):</strong>
+              <strong>Possible Responses:</strong>
             </div>
             <div class="code-block">
-              <pre>{
+              <pre>// 200 - Password reset
+{
   <span class="json-key">"success"</span>: <span class="json-number">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Password reset successfully"</span>
-}</pre>
+  <span class="json-key">"message"</span>: <span class="json-string">"Password has been reset successfully"</span>
+}
+
+// 400 - Missing required fields
+{
+  <span class="json-key">"success"</span>: <span class="json-number">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Reset token and new password are required"</span>
+}
+
+// 400 - Invalid or expired token
+{
+  <span class="json-key">"success"</span>: <span class="json-number">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Invalid or expired reset token"</span>
+}
+</pre>
             </div>
             <div class="info-box">
               <strong>Security:</strong> Tokens should be single-use and
-              time-limited.
+              time-limited. The controller clears the token on successful reset.
             </div>
           </div>
         </div>
