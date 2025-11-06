@@ -405,6 +405,84 @@
             </div>
           </div>
         </div>
+
+        <!-- Forgot Password -->
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="path">/api/auth/forgot-password</span>
+            <span class="auth-badge public">Public</span>
+          </div>
+          <p class="description">
+            Request a password reset link/token to be sent to the user's email.
+          </p>
+          <div class="collapsible" onclick="toggleCollapse(this)">
+            ▼ View Details
+          </div>
+          <div class="collapsible-content">
+            <div class="info-box">
+              <strong>Request Body:</strong>
+            </div>
+            <div class="code-block">
+              <pre>{
+  <span class="json-key">"email"</span>: <span class="json-string">"john@example.com"</span>
+}</pre>
+            </div>
+            <div class="info-box">
+              <strong>Response (200):</strong>
+            </div>
+            <div class="code-block">
+              <pre>{
+  <span class="json-key">"success"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Password reset email sent"</span>
+}</pre>
+            </div>
+            <div class="info-box">
+              <strong>Note:</strong> For security, the API may always return a
+              generic success message so attackers cannot enumerate existing
+              emails.
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset Password -->
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="path">/api/auth/reset-password</span>
+            <span class="auth-badge public">Public</span>
+          </div>
+          <p class="description">
+            Reset a user's password using the token provided in the reset email.
+          </p>
+          <div class="collapsible" onclick="toggleCollapse(this)">
+            ▼ View Details
+          </div>
+          <div class="collapsible-content">
+            <div class="info-box">
+              <strong>Request Body:</strong>
+            </div>
+            <div class="code-block">
+              <pre>{
+  <span class="json-key">"token"</span>: <span class="json-string">"reset-token-here"</span>,
+  <span class="json-key">"password"</span>: <span class="json-string">"newPassword123"</span>
+}</pre>
+            </div>
+            <div class="info-box">
+              <strong>Response (200):</strong>
+            </div>
+            <div class="code-block">
+              <pre>{
+  <span class="json-key">"success"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Password reset successfully"</span>
+}</pre>
+            </div>
+            <div class="info-box">
+              <strong>Security:</strong> Tokens should be single-use and
+              time-limited.
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- User Profile Section -->
