@@ -236,7 +236,7 @@ export const forgotPassword = async (req, res) => {
   }
 
   // Generate password reset token (implement your own logic)
-  const resetToken = user.generateResetToken();
+  const resetToken = user.createPasswordResetToken();
 
   // Send password reset email (implement your own email sending logic)
   await sendPasswordResetEmail(user.email, resetToken);
