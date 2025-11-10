@@ -273,7 +273,7 @@
 
         <div class="grid" style="margin-top: 20px">
           <div class="stat-card">
-            <div class="stat-number">17</div>
+            <div class="stat-number">20</div>
             <div class="stat-label">Total Endpoints</div>
           </div>
           <div class="stat-card">
@@ -469,22 +469,25 @@
         <div class="endpoint">
           <div class="endpoint-header">
             <span class="method post">POST</span>
-            <span class="path">/api/auth/reset-password</span>
+            <span class="path">/api/auth/reset-password/:resetToken</span>
             <span class="auth-badge public">Public</span>
           </div>
           <p class="description">
-            Reset a user's password using the reset token.
+            Reset a user's password using the reset token (sent via email).
           </p>
           <div class="collapsible" onclick="toggleCollapse(this)">
             ▼ View Details
           </div>
           <div class="collapsible-content">
             <div class="info-box">
+              <strong>URL Parameter:</strong><br />
+              • <code>resetToken</code> - The token received via email
+            </div>
+            <div class="info-box">
               <strong>Request Body:</strong>
             </div>
             <div class="code-block">
               <pre>{
-  <span class="json-key">"resetToken"</span>: <span class="json-string">"reset-token-here"</span>,
   <span class="json-key">"newPassword"</span>: <span class="json-string">"newPassword123"</span>
 }</pre>
             </div>
@@ -551,6 +554,39 @@
             <span class="role-badge">All Roles</span>
           </div>
           <p class="description">Delete current user's account</p>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header">
+            <span class="method put">PUT</span>
+            <span class="path">/api/user/change-password</span>
+            <span class="auth-badge protected">Protected</span>
+            <span class="role-badge">All Roles</span>
+          </div>
+          <p class="description">Change current user's password</p>
+          <div class="collapsible" onclick="toggleCollapse(this)">
+            ▼ View Details
+          </div>
+          <div class="collapsible-content">
+            <div class="info-box">
+              <strong>Request Body:</strong>
+            </div>
+            <div class="code-block">
+              <pre>{
+  <span class="json-key">"currentPassword"</span>: <span class="json-string">"oldPassword123"</span>,
+  <span class="json-key">"newPassword"</span>: <span class="json-string">"newPassword456"</span>
+}</pre>
+            </div>
+            <div class="info-box">
+              <strong>Response (200):</strong>
+            </div>
+            <div class="code-block">
+              <pre>{
+  <span class="json-key">"success"</span>: <span class="json-number">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"Password changed successfully"</span>
+}</pre>
+            </div>
+          </div>
         </div>
       </div>
 
